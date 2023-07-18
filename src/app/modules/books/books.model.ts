@@ -21,8 +21,8 @@ const BookModel = new Schema<IBook>(
       default: [],
     },
 
-    authorId: {
-      type: Schema.Types.ObjectId,
+    authorEmail: {
+      type: String,
       ref: 'User',
     },
   },

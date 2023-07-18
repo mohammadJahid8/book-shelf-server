@@ -9,7 +9,6 @@ import { User } from '../modules/users/users.model';
 
 const auth = () => async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log('auth middleware', req.body);
     // get auth token
     const token = req.headers.authorization;
     if (!token)
@@ -18,7 +17,6 @@ const auth = () => async (req: Request, res: Response, next: NextFunction) => {
     let verifiedUser = null;
 
     verifiedUser = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
-    console.log('verifiedUser', verifiedUser);
 
     const isUserExist = await User.isUserExist(verifiedUser.email);
 
@@ -27,9 +25,6 @@ const auth = () => async (req: Request, res: Response, next: NextFunction) => {
         httpStatus.UNAUTHORIZED,
         'You are not a verified user'
       );
-    }
-    if (req.body.authorId !== verifiedUser.id) {
-      throw new ApiError(httpStatus.UNAUTHORIZED, 'Invalid author id');
     }
 
     req.user = verifiedUser;

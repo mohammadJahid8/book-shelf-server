@@ -12,7 +12,6 @@ import { IBook } from './books.interface';
 import { BookService } from './books.service';
 
 const createBook = catchAsync(async (req: Request, res: Response) => {
-  console.log('createBook', req.body);
   const result = await BookService.createBook(req.body);
 
   sendResponse<IBook>(res, {

@@ -12,6 +12,12 @@ import {
 import { User } from '../users/users.model';
 
 const createAuthUser = async (authUser: IUser): Promise<IUser | null> => {
+  const isUserExist = await User.isUserExist(authUser.email);
+
+  if (isUserExist) {
+    throw new ApiError(httpStatus.CONFLICT, 'Your email is already registered');
+  }
+
   const result = await User.create(authUser);
   return result;
 };
