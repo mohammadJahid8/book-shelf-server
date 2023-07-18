@@ -29,23 +29,6 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateUser = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const updatedData = req.body;
-
-  if (Object.keys(updatedData).length === 0) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'No data found to update!');
-  }
-  const result = await UsersService.updateUser(id, updatedData);
-
-  sendResponse<IUser>(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'User updated successfully!',
-    data: result,
-  });
-});
-
 const deleteUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
 
@@ -74,32 +57,10 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
-  const updatedData = req.body;
-
-  if (Object.keys(updatedData).length === 0) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'No data found to update!');
-  }
-
-  if (!req.user) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'User not found');
-  }
-
-  const result = await UsersService.updateMyProfile(req.user, updatedData);
-
-  sendResponse<IUser>(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'My profile updated successfully!',
-    data: result,
-  });
-});
-
 export const UserController = {
   getAllUsers,
   getSingleUser,
-  updateUser,
+
   deleteUser,
   getMyProfile,
-  updateMyProfile,
 };
