@@ -25,6 +25,8 @@ const getAllBooks = async (
 
   const andCondition = [];
 
+  console.log('searchterm', searchterm);
+
   if (searchterm) {
     andCondition.push({
       $or: BookSearchableFields.map(field => ({
@@ -35,6 +37,8 @@ const getAllBooks = async (
       })),
     });
   }
+
+  console.log('andCondition', andCondition);
 
   const sortCondition: { [key: string]: SortOrder } = {};
 
@@ -97,10 +101,25 @@ const deleteBook = async (id: string): Promise<IBook | null> => {
   return result;
 };
 
+const addReview = async (id: string, review: string): Promise<IBook | null> => {
+  const updatedBook = await Book.findByIdAndUpdate(
+    id,
+    {
+      $push: {
+        reviews: review,
+      },
+    },
+    { new: true }
+  );
+
+  return updatedBook;
+};
+
 export const BookService = {
   createBook,
   getAllBooks,
   getSingleBook,
   updateBook,
   deleteBook,
+  addReview,
 };

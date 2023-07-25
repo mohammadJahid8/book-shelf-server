@@ -21,6 +21,11 @@ const BookModel = new Schema<IBook>(
       default: [],
     },
 
+    publicationDate: {
+      type: String,
+      required: true,
+    },
+
     authorEmail: {
       type: String,
       ref: 'User',

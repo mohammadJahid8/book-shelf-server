@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 import { paginationFields } from '../../../constants/pagination';
 import ApiError from '../../../errors/ApiError';
 import catchAsync from '../../../shared/catchAsync';
-import lowercaseQuery from '../../../shared/lowercaseQuery';
+
 import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
 
@@ -23,10 +23,9 @@ const createBook = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllBooks = catchAsync(async (req: Request, res: Response) => {
-  const lowercasedQuery = lowercaseQuery(req.query);
-
-  const filters = pick(lowercasedQuery, BookFilterableFields);
-  const paginationOptions = pick(lowercasedQuery, paginationFields);
+  const filters = pick(req.query, BookFilterableFields);
+  console.log('filters', filters);
+  const paginationOptions = pick(req.query, paginationFields);
 
   const result = await BookService.getAllBooks(filters, paginationOptions);
   sendResponse<IBook[]>(res, {
@@ -54,6 +53,8 @@ const updateBook = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const updatedData = req.body;
 
+  console.log(req.body);
+
   if (Object.keys(updatedData).length === 0) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'No data found to update!');
   }
@@ -80,10 +81,25 @@ const deleteBook = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const addReview = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const review = req.body.review;
+
+  const result = await BookService.addReview(id, review);
+
+  sendResponse<IBook>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Review added successfully!',
+    data: result,
+  });
+});
+
 export const BooksController = {
   createBook,
   getAllBooks,
   getSingleBook,
   updateBook,
   deleteBook,
+  addReview,
 };
