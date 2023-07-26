@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IWishlist, WishListModel } from './wishlist.interface';
+import { IWishlist, WishListModel, readingStatus } from './wishlist.interface';
 
 const WishListModel = new Schema<IWishlist>(
   {
@@ -12,6 +12,14 @@ const WishListModel = new Schema<IWishlist>(
     userEmail: {
       type: String,
       required: true,
+    },
+    isReading: {
+      type: Boolean,
+      default: false,
+    },
+    readingStatus: {
+      type: String,
+      enum: readingStatus,
     },
   },
   {

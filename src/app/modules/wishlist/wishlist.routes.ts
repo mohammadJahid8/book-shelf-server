@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post('/', WishlistController.addBook);
 router.get('/', auth(), WishlistController.getWishlistByToken);
+router.patch('/:id', auth(), WishlistController.updateBook);
 
 export const WishlistRoutes = router;

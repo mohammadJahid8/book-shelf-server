@@ -16,8 +16,6 @@ const addBook = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getWishlistByToken = catchAsync(async (req: Request, res: Response) => {
-  console.log(req?.user?.email);
-
   const result = await WishlistService.getWishlistByToken(req?.user?.email);
 
   sendResponse(res, {
@@ -28,7 +26,21 @@ const getWishlistByToken = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateBook = catchAsync(async (req: Request, res: Response) => {
+  console.log('req.params.id', req.params);
+
+  const result = await WishlistService.updateBook(req.params.id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Wishlist updated successfully!',
+    data: result,
+  });
+});
+
 export const WishlistController = {
   addBook,
   getWishlistByToken,
+  updateBook,
 };
