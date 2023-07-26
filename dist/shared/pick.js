@@ -8,6 +8,7 @@ const pick = (obj, keys) => {
             finalObj[key] = obj[key];
         }
     }
+    console.log('finalObj', finalObj);
     return finalObj;
 };
 exports.default = pick;

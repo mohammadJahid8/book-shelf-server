@@ -17,7 +17,6 @@ const http_status_1 = __importDefault(require("http-status"));
 const pagination_1 = require("../../../constants/pagination");
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
-const lowercaseQuery_1 = __importDefault(require("../../../shared/lowercaseQuery"));
 const pick_1 = __importDefault(require("../../../shared/pick"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const books_constants_1 = require("./books.constants");
@@ -32,9 +31,9 @@ const createBook = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     });
 }));
 const getAllBooks = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const lowercasedQuery = (0, lowercaseQuery_1.default)(req.query);
-    const filters = (0, pick_1.default)(lowercasedQuery, books_constants_1.BookFilterableFields);
-    const paginationOptions = (0, pick_1.default)(lowercasedQuery, pagination_1.paginationFields);
+    const filters = (0, pick_1.default)(req.query, books_constants_1.BookFilterableFields);
+    console.log('filters', filters);
+    const paginationOptions = (0, pick_1.default)(req.query, pagination_1.paginationFields);
     const result = yield books_service_1.BookService.getAllBooks(filters, paginationOptions);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
@@ -57,6 +56,7 @@ const getSingleBook = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
 const updateBook = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const updatedData = req.body;
+    console.log(req.body);
     if (Object.keys(updatedData).length === 0) {
         throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, 'No data found to update!');
     }
@@ -78,10 +78,22 @@ const deleteBook = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         data: result,
     });
 }));
+const addReview = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const review = req.body.review;
+    const result = yield books_service_1.BookService.addReview(id, review);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Review added successfully!',
+        data: result,
+    });
+}));
 exports.BooksController = {
     createBook,
     getAllBooks,
     getSingleBook,
     updateBook,
     deleteBook,
+    addReview,
 };

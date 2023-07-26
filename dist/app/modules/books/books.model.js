@@ -19,6 +19,10 @@ const BookModel = new mongoose_1.Schema({
         type: [String],
         default: [],
     },
+    publicationDate: {
+        type: String,
+        required: true,
+    },
     authorEmail: {
         type: String,
         ref: 'User',

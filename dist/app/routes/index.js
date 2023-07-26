@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const auth_routes_1 = require("../modules/auth/auth.routes");
 const books_routes_1 = require("../modules/books/books.routes");
 const users_routes_1 = require("../modules/users/users.routes");
+const wishlist_routes_1 = require("../modules/wishlist/wishlist.routes");
 const router = express_1.default.Router();
 const moduleRoutes = [
     {
@@ -20,6 +21,10 @@ const moduleRoutes = [
     {
         path: '/books',
         route: books_routes_1.BookRoutes,
+    },
+    {
+        path: '/wishlist',
+        route: wishlist_routes_1.WishlistRoutes,
     },
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

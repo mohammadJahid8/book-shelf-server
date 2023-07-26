@@ -27,6 +27,7 @@ const getAllBooks = (filters, paginationOptions) => __awaiter(void 0, void 0, vo
     const { searchterm } = filters;
     const { page, limit, skip, sortby, sortorder } = paginationHelper_1.PaginationHelper.calculatePagination(paginationOptions);
     const andCondition = [];
+    console.log('searchterm', searchterm);
     if (searchterm) {
         andCondition.push({
             $or: books_constants_1.BookSearchableFields.map(field => ({
@@ -37,6 +38,7 @@ const getAllBooks = (filters, paginationOptions) => __awaiter(void 0, void 0, vo
             })),
         });
     }
+    console.log('andCondition', andCondition);
     const sortCondition = {};
     if (sortby && sortorder) {
         sortCondition[sortby] = sortorder;
@@ -77,10 +79,19 @@ const deleteBook = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield books_model_1.Book.findByIdAndDelete(id);
     return result;
 });
+const addReview = (id, review) => __awaiter(void 0, void 0, void 0, function* () {
+    const updatedBook = yield books_model_1.Book.findByIdAndUpdate(id, {
+        $push: {
+            reviews: review,
+        },
+    }, { new: true });
+    return updatedBook;
+});
 exports.BookService = {
     createBook,
     getAllBooks,
     getSingleBook,
     updateBook,
     deleteBook,
+    addReview,
 };

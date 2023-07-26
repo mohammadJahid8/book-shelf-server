@@ -7,18 +7,12 @@ const calculatePagination = (options) => {
     const skip = (page - 1) * limit;
     const sortby = options.sortby || 'createdAt';
     const sortorder = options.sortorder || 'desc';
-    const minprice = Number(options.minprice) || 0;
-    const maxprice = Number(options.maxprice) || 0;
-    const location = options.location || '';
     return {
         page,
         limit,
         skip,
         sortby,
         sortorder,
-        minprice,
-        maxprice,
-        location,
     };
 };
 exports.PaginationHelper = {
